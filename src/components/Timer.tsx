@@ -1,20 +1,42 @@
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
-export const Timer = ({ active, maxSeconds = 60 }: { active: boolean; maxSeconds?: number }) => {
+interface TimerProps {
+  active: boolean;
+}
+
+export function Timer({ active }: TimerProps) {
   const [seconds, setSeconds] = useState(0);
+
   useEffect(() => {
-    if (!active) return;
-    if (seconds >= maxSeconds) return;
-    const id = setInterval(() => setSeconds((s) => s + 1), 1_000);
-    return () => clearInterval(id);
-  }, [active, seconds, maxSeconds]);
-  useEffect(() => {
-    if (!active) setSeconds(0);
+    let interval: number | null = null;
+
+    if (active) {
+      setSeconds(0);
+      interval = setInterval(() => {
+        setSeconds(s => s + 1);
+      }, 1000);
+    } else if (interval) {
+      clearInterval(interval);
+    }
+
+    return () => {
+      if (interval) clearInterval(interval);
+    };
   }, [active]);
-  const mm = String(Math.floor(seconds / 60)).padStart(2, "0");
-  const ss = String(seconds % 60).padStart(2, "0");
+
+  const formatTime = (secs: number) => {
+    const mins = Math.floor(secs / 60);
+    const remainingSecs = secs % 60;
+    return `${mins}:${remainingSecs < 10 ? '0' : ''}${remainingSecs}`;
+  };
+
+  if (!active && seconds === 0) return null;
+
   return (
-    <span className={`font-mono text-lg ${active ? "text-red-600 animate-pulse" : "text-gray-600"}`}>{mm}:{ss}</span>
+    <div className={`badge rounded-pill ${active ? 'bg-danger' : 'bg-secondary'} px-3 py-2 fs-6`}>
+      {active ? (
+        <><span className="spinner-grow spinner-grow-sm me-1" role="status" aria-hidden="true"></span> Recording</>
+      ) : 'Recording Length'}: {formatTime(seconds)}
+    </div>
   );
-};
+}

@@ -2,7 +2,7 @@ import { useState } from "react";
 import useRecorderJs from "../hooks/useRecorderJs";
 import { Timer } from "../components/Timer";
 import { useNavigate } from "react-router-dom";
-import { Button } from "../components/Button";
+// import { Button } from "../components/Button";
 import React from "react";
 
 const COOKIE_IMAGE = "/cookie_theft.jpg";
@@ -33,31 +33,61 @@ export default function CookieTestPage() {
   }
 
   return (
-    <main className="flex flex-col lg:flex-row gap-8 p-6">
-      <section className="lg:w-1/2 rounded-xl bg-white shadow-card ring-1 ring-gray-100 p-4 sm:p-6 md:p-8">
-        <h1 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">Cookie Theft Test (Verbal)</h1>
-        <p className="text-gray-700 mb-4 sm:mb-6 text-sm sm:text-base">Ensure you are in a quiet environment with minimal background noise.</p>
-        <ol className="list-decimal list-inside space-y-1 sm:space-y-2 mb-6 sm:mb-8 text-sm sm:text-base text-gray-800">
-          <li>Click <strong>Start Recording</strong> when ready.</li>
-          <li>Speak for one minute, describing the picture in detail.</li>
-          <li>Click <strong>Stop Recording</strong> when done.</li>
-        </ol>
-        <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
-          <Button onClick={recording ? stop : start} variant={recording ? "danger" : "primary"}>
-            {recording ? "Stop Recording" : "Start Recording"}
-          </Button>
-          <Timer active={recording} />
+    <div className="container py-5">
+      <div className="row g-4">
+        <div className="col-lg-6">
+          <div className="card shadow border-0 h-100">
+            <div className="card-body">
+              <h1 className="card-title text-primary fw-bold mb-3">Cookie Theft Test</h1>
+              <p className="card-text text-muted mb-4">
+                Ensure you are in a quiet environment with minimal background noise.
+              </p>
+              <ol className="list-group list-group-numbered mb-4">
+                <li className="list-group-item border-0">Click <strong>Start Recording</strong> when ready.</li>
+                <li className="list-group-item border-0">Speak for one minute, describing the picture in detail.</li>
+                <li className="list-group-item border-0">Click <strong>Stop Recording</strong> when done.</li>
+              </ol>
+              <div className="d-flex flex-wrap gap-3 align-items-center mb-4">
+                <button
+                  onClick={recording ? stop : start}
+                  className={`btn ${recording ? 'btn-danger' : 'btn-primary'}`}
+                >
+                  {recording ? "Stop Recording" : "Start Recording"}
+                </button>
+                <Timer active={recording} />
+              </div>
+              {audioBlob && !recording && (
+                <button
+                  onClick={handleSubmit}
+                  disabled={uploading}
+                  className="btn btn-success"
+                >
+                  {uploading ? (
+                    <>
+                      <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                      Uploading...
+                    </>
+                  ) : "Submit & Get Result"}
+                </button>
+              )}
+              {error && <div className="alert alert-danger mt-3">{error}</div>}
+            </div>
+          </div>
         </div>
-        {audioBlob && !recording && (
-          <Button onClick={handleSubmit} disabled={uploading} variant="primary">
-            {uploading ? "Uploading…" : "Submit & Get Result"}
-          </Button>
-        )}
-        {error && <p className="text-red-600 mt-4 text-sm sm:text-base">{error}</p>}
-      </section>
-      <section className="lg:w-1/2 flex justify-center items-start">
-        <img src={COOKIE_IMAGE} alt="Cookie Theft stimulus" className="w-full max-w-md h-auto border rounded-xl shadow-card" />
-      </section>
-    </main>
+
+        <div className="col-lg-6">
+          <div className="card shadow border-0 h-100">
+            <div className="card-body d-flex justify-content-center align-items-center">
+              <img
+                src={COOKIE_IMAGE}
+                alt="Cookie Theft stimulus"
+                className="img-fluid rounded"
+                style={{ maxHeight: "500px" }}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

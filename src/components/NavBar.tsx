@@ -2,16 +2,29 @@ import React from 'react';
 import { Link } from "react-router-dom";
 
 export const NavBar = () => (
-  <header className="sticky top-0 z-40 bg-brand-600 text-white shadow">
-    <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2 sm:py-3">
-      <Link to="/" className="flex items-center gap-2">
-        <span className="text-xl sm:text-2xl font-semibold tracking-tight">NeuroVox</span>
+  <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div className="container">
+      <Link className="navbar-brand fw-bold" to="/">
+        <span className="fs-4">NeuroVox</span>
       </Link>
-      <nav className="flex gap-4 sm:gap-6 text-sm font-medium">
-        <Link to="/" className="hover:text-accent-500 transition-colors">
-          Voice Test
-        </Link>
-      </nav>
+      <button
+        className="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+      >
+        <span className="navbar-toggler-icon"></span>
+      </button>
+      <div className="collapse navbar-collapse" id="navbarNav">
+        <ul className="navbar-nav ms-auto">
+          <li className="nav-item">
+            <Link className="nav-link" to="/">Voice Test</Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link" to="/about">About</Link>
+          </li>
+        </ul>
+      </div>
     </div>
-  </header>
+  </nav>
 );

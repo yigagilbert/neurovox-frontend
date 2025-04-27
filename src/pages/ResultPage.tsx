@@ -34,7 +34,7 @@ export default function ResultPage() {
                   <p className="mb-1">Confidence</p>
                   <div className="progress" role="progressbar">
                     <div
-                      className={`progress-bar progress-bar-striped ${confidencePct > 70 ? 'bg-success' : 'bg-warning'}`}
+                      className={`progress-bar progress-bar-striped ${parseFloat(confidencePct) > 70 ? 'bg-success' : 'bg-warning'}`}
                       style={{ width: `${confidencePct}%` }}
                     >
                       {confidencePct}%
